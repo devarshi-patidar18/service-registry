@@ -1,10 +1,14 @@
-# Use an official JDK runtime as base image
-FROM openjdk:17-jdk-slim
-# Set working directory
+# Stage 1: Build the application
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
-# Copy JAR file into the container
-COPY target/service-registry-0.0.1-SNAPSHOT.jar app.jar
-# Expose port (same as in your Spring Boot app)
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Stage 2: Run the application
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+# Copy the JAR from the build stage, not from local machine
+COPY --from=build /app/target/service-registry-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8761
-# Run the JAR file
 ENTRYPOINT ["java", "-jar", "app.jar"]
