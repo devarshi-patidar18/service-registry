@@ -3,6 +3,6 @@ services:
     name: service-registry
     env: docker
     plan: free
-    buildCommand: "./mvnw clean package -DskipTests"
-    startCommand: "java -jar target/service-registry-0.0.1-SNAPSHOT.jar"
+    # buildCommand: "./mvnw clean package -DskipTests"
+    # startCommand: "java -jar target/service-registry-0.0.1-SNAPSHOT.jar"
     
